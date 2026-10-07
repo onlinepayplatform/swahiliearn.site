@@ -49,40 +49,66 @@ export interface VisitorLead {
 class AppStorage {
   private listeners: Set<() => void> = new Set();
 
+  private inMemoryStore: Record<string, string> = {};
+
   constructor() {
     this.initDefaults();
   }
 
-  private initDefaults() {
-    if (typeof window === 'undefined') return;
+  private getItem(key: string): string | null {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        return window.localStorage.getItem(key);
+      }
+    } catch {
+      // In-memory fallback
+    }
+    return this.inMemoryStore[key] || null;
+  }
 
-    if (!localStorage.getItem(KEYS.USER_PROFILE)) {
-      localStorage.setItem(KEYS.USER_PROFILE, JSON.stringify(DEFAULT_USER_PROFILE));
+  private setItem(key: string, value: string) {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(key, value);
+      }
+    } catch {
+      // In-memory fallback
     }
-    if (!localStorage.getItem(KEYS.FOREIGN_LEARNERS)) {
-      localStorage.setItem(KEYS.FOREIGN_LEARNERS, JSON.stringify(DEFAULT_FOREIGN_LEARNERS));
-    }
-    if (!localStorage.getItem(KEYS.ADMIN_SETTINGS)) {
-      localStorage.setItem(KEYS.ADMIN_SETTINGS, JSON.stringify(DEFAULT_ADMIN_SETTINGS));
-    }
-    if (!localStorage.getItem(KEYS.WITHDRAWALS)) {
-      const initialWithdrawals: WithdrawalRequest[] = [
-        {
-          id: 'tx-prev-101',
-          userId: 'usr-default-01',
-          userName: 'Juma Bakari Mwenda',
-          phone: '0754892144',
-          network: 'mpesa',
-          amountTzs: 160000,
-          feeTzs: 2400,
-          netAmountTzs: 157600,
-          status: 'completed',
-          requestedAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-          transactionId: 'MPESA-TX948194',
-          note: 'Malipo yamekamilika kwa ufanisi'
-        }
-      ];
-      localStorage.setItem(KEYS.WITHDRAWALS, JSON.stringify(initialWithdrawals));
+    this.inMemoryStore[key] = value;
+  }
+
+  private initDefaults() {
+    try {
+      if (!this.getItem(KEYS.USER_PROFILE)) {
+        this.setItem(KEYS.USER_PROFILE, JSON.stringify(DEFAULT_USER_PROFILE));
+      }
+      if (!this.getItem(KEYS.FOREIGN_LEARNERS)) {
+        this.setItem(KEYS.FOREIGN_LEARNERS, JSON.stringify(DEFAULT_FOREIGN_LEARNERS));
+      }
+      if (!this.getItem(KEYS.ADMIN_SETTINGS)) {
+        this.setItem(KEYS.ADMIN_SETTINGS, JSON.stringify(DEFAULT_ADMIN_SETTINGS));
+      }
+      if (!this.getItem(KEYS.WITHDRAWALS)) {
+        const initialWithdrawals: WithdrawalRequest[] = [
+          {
+            id: 'tx-prev-101',
+            userId: 'usr-default-01',
+            userName: 'Juma Bakari Mwenda',
+            phone: '0754892144',
+            network: 'mpesa',
+            amountTzs: 160000,
+            feeTzs: 2400,
+            netAmountTzs: 157600,
+            status: 'completed',
+            requestedAt: new Date(Date.now() - 86400000 * 2).toISOString(),
+            transactionId: 'MPESA-TX948194',
+            note: 'Malipo yamekamilika kwa ufanisi'
+          }
+        ];
+        this.setItem(KEYS.WITHDRAWALS, JSON.stringify(initialWithdrawals));
+      }
+    } catch (err) {
+      console.warn('Storage initialization fallback:', err);
     }
   }
 
@@ -100,7 +126,7 @@ class AppStorage {
   // --- User Profile ---
   public getUserProfile(): UserProfile {
     try {
-      const data = localStorage.getItem(KEYS.USER_PROFILE);
+      const data = this.getItem(KEYS.USER_PROFILE);
       return data ? JSON.parse(data) : DEFAULT_USER_PROFILE;
     } catch {
       return DEFAULT_USER_PROFILE;
@@ -110,7 +136,7 @@ class AppStorage {
   public updateUserProfile(updates: Partial<UserProfile>): UserProfile {
     const current = this.getUserProfile();
     const updated = { ...current, ...updates };
-    localStorage.setItem(KEYS.USER_PROFILE, JSON.stringify(updated));
+    this.setItem(KEYS.USER_PROFILE, JSON.stringify(updated));
     this.notify();
     return updated;
   }
@@ -123,7 +149,7 @@ class AppStorage {
       totalEarnedTzs: current.totalEarnedTzs + amountTzs,
       completedSessionsCount: current.completedSessionsCount + 1
     };
-    localStorage.setItem(KEYS.USER_PROFILE, JSON.stringify(updated));
+    this.setItem(KEYS.USER_PROFILE, JSON.stringify(updated));
     this.notify();
     return updated;
   }
@@ -131,7 +157,7 @@ class AppStorage {
   // --- Foreign Learners Catalog ---
   public getForeignLearners(): ForeignLearner[] {
     try {
-      const data = localStorage.getItem(KEYS.FOREIGN_LEARNERS);
+      const data = this.getItem(KEYS.FOREIGN_LEARNERS);
       return data ? JSON.parse(data) : DEFAULT_FOREIGN_LEARNERS;
     } catch {
       return DEFAULT_FOREIGN_LEARNERS;
@@ -139,7 +165,7 @@ class AppStorage {
   }
 
   public saveForeignLearners(learners: ForeignLearner[]) {
-    localStorage.setItem(KEYS.FOREIGN_LEARNERS, JSON.stringify(learners));
+    this.setItem(KEYS.FOREIGN_LEARNERS, JSON.stringify(learners));
     this.notify();
   }
 
@@ -162,7 +188,7 @@ class AppStorage {
   // --- Withdrawals ---
   public getWithdrawals(): WithdrawalRequest[] {
     try {
-      const data = localStorage.getItem(KEYS.WITHDRAWALS);
+      const data = this.getItem(KEYS.WITHDRAWALS);
       return data ? JSON.parse(data) : [];
     } catch {
       return [];
@@ -188,7 +214,7 @@ class AppStorage {
     });
 
     withdrawals.unshift(newReq);
-    localStorage.setItem(KEYS.WITHDRAWALS, JSON.stringify(withdrawals));
+    this.setItem(KEYS.WITHDRAWALS, JSON.stringify(withdrawals));
     this.notify();
     return newReq;
   }
@@ -216,14 +242,14 @@ class AppStorage {
       });
     }
 
-    localStorage.setItem(KEYS.WITHDRAWALS, JSON.stringify(withdrawals));
+    this.setItem(KEYS.WITHDRAWALS, JSON.stringify(withdrawals));
     this.notify();
   }
 
   // --- Sessions History ---
   public getSessions(): UserSession[] {
     try {
-      const data = localStorage.getItem(KEYS.SESSIONS);
+      const data = this.getItem(KEYS.SESSIONS);
       return data ? JSON.parse(data) : [];
     } catch {
       return [];
@@ -233,14 +259,14 @@ class AppStorage {
   public saveSession(session: UserSession) {
     const sessions = this.getSessions();
     sessions.unshift(session);
-    localStorage.setItem(KEYS.SESSIONS, JSON.stringify(sessions));
+    this.setItem(KEYS.SESSIONS, JSON.stringify(sessions));
     this.notify();
   }
 
   // --- Admin Settings ---
   public getAdminSettings(): AdminSettings {
     try {
-      const data = localStorage.getItem(KEYS.ADMIN_SETTINGS);
+      const data = this.getItem(KEYS.ADMIN_SETTINGS);
       return data ? { ...DEFAULT_ADMIN_SETTINGS, ...JSON.parse(data) } : DEFAULT_ADMIN_SETTINGS;
     } catch {
       return DEFAULT_ADMIN_SETTINGS;
@@ -250,7 +276,7 @@ class AppStorage {
   public updateAdminSettings(settings: Partial<AdminSettings>) {
     const current = this.getAdminSettings();
     const updated = { ...current, ...settings };
-    localStorage.setItem(KEYS.ADMIN_SETTINGS, JSON.stringify(updated));
+    this.setItem(KEYS.ADMIN_SETTINGS, JSON.stringify(updated));
     this.notify();
     return updated;
   }
@@ -258,7 +284,7 @@ class AppStorage {
   // --- Leads / Visitor Logs ---
   public getLeads(): VisitorLead[] {
     try {
-      const data = localStorage.getItem(KEYS.LEADS);
+      const data = this.getItem(KEYS.LEADS);
       if (data) return JSON.parse(data);
       // Default sample leads
       const sample: VisitorLead[] = [
@@ -266,7 +292,7 @@ class AppStorage {
         { id: 'lead-2', fullName: 'Zawadi Mwamburi', phone: '0765991823', region: 'Arusha', timestamp: 'Dakika 25 zilizopita', status: 'new' },
         { id: 'lead-3', fullName: 'Moses Kibona', phone: '0788231902', region: 'Mwanza', timestamp: 'Saa 1 iliyopita', status: 'withdrawn' }
       ];
-      localStorage.setItem(KEYS.LEADS, JSON.stringify(sample));
+      this.setItem(KEYS.LEADS, JSON.stringify(sample));
       return sample;
     } catch {
       return [];
@@ -281,17 +307,17 @@ class AppStorage {
       timestamp: 'Sasa hivi',
       status: 'new'
     });
-    localStorage.setItem(KEYS.LEADS, JSON.stringify(leads));
+    this.setItem(KEYS.LEADS, JSON.stringify(leads));
     this.notify();
   }
 
   // --- Language state ---
   public getLanguage(): 'sw' | 'en' {
-    return (localStorage.getItem(KEYS.LANGUAGE) as 'sw' | 'en') || 'sw';
+    return (this.getItem(KEYS.LANGUAGE) as 'sw' | 'en') || 'sw';
   }
 
   public setLanguage(lang: 'sw' | 'en') {
-    localStorage.setItem(KEYS.LANGUAGE, lang);
+    this.setItem(KEYS.LANGUAGE, lang);
     this.notify();
   }
 }

@@ -2,7 +2,10 @@ import { GoogleGenAI } from '@google/genai';
 import { ForeignLearner, ChatMessage } from '../types';
 
 // Client-side Gemini initializer if user supplies key, or handles simulated authentic replies
-const apiKey = typeof process !== 'undefined' ? process.env.GEMINI_API_KEY : '';
+const apiKey =
+  (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_GEMINI_API_KEY) ||
+  (typeof process !== 'undefined' && typeof process.env !== 'undefined' && process.env?.GEMINI_API_KEY) ||
+  '';
 
 let aiClient: GoogleGenAI | null = null;
 if (apiKey) {
