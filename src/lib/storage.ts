@@ -1,54 +1,57 @@
-import { ForeignLearner, UserProfile, WithdrawalRequest, AdminSettings, UserSession } from '../types';
-import { DEFAULT_FOREIGN_LEARNERS } from './defaultProfiles';
+import {
+  ForeignLearner,
+  UserProfile,
+  AdminSettings,
+  UserSession,
+  VerifiedAfricanPayout,
+  RegisteredVirtualAccount
+} from '../types';
+import { DEFAULT_FOREIGN_LEARNERS, INITIAL_VERIFIED_PAYOUTS } from './defaultProfiles';
 
 const KEYS = {
   USER_PROFILE: 'swahiliearn_user_profile',
   FOREIGN_LEARNERS: 'swahiliearn_learners',
-  WITHDRAWALS: 'swahiliearn_withdrawals',
   SESSIONS: 'swahiliearn_sessions',
   ADMIN_SETTINGS: 'swahiliearn_admin_settings',
-  LEADS: 'swahiliearn_leads',
+  VERIFIED_PAYOUTS: 'swahiliearn_verified_payouts',
+  VIRTUAL_ACCOUNTS: 'swahiliearn_virtual_accounts',
   LANGUAGE: 'swahiliearn_lang'
 };
 
 const DEFAULT_USER_PROFILE: UserProfile = {
-  id: 'usr-default-01',
-  fullName: 'Juma Bakari Mwenda',
-  phone: '0754892144',
-  region: 'Dar es Salaam',
+  id: 'usr-guest-01',
+  fullName: '',
+  phone: '',
   balanceTzs: 160000,
-  totalEarnedTzs: 320000,
-  pendingTzs: 0,
-  totalWithdrawnTzs: 160000,
-  isActivated: false,
-  activationFeeTzs: 18500,
-  completedSessionsCount: 4,
-  joinedDate: '2026-09-28'
+  totalEarnedTzs: 160000,
+  completedSessionsCount: 2,
+  isRegistered: false,
+  joinedDate: new Date().toISOString()
 };
 
 const DEFAULT_ADMIN_SETTINGS: AdminSettings = {
   adminPasscode: '8998admin',
-  whatsappUrl: 'https://wa.me/message/EP72QM4VJRTIA1',
-  supportPhone: '+255 754 892 144',
-  minWithdrawalTzs: 50000,
-  activationNotice: 'Akaunti yako mpya inahitaji uthibitisho wa kiusalama (Account Activation) kabla ya kutoa fedha kwa mara ya kwanza. Wasiliana na msimamizi kupitia WhatsApp rasmi.',
-  bannerMessage: '🔥 PONGEZI: Zaidi ya Watumiaji 14,800 wameshalipwa wiki hii kupitia M-Pesa, Tigo Pesa, na Airtel Money!',
-  liveVisitorsBase: 12480,
-  sponsorName: 'ONLINEPAY DIGITAL PLATFORM'
+  whatsappSupportUrl: 'https://wa.me/message/EP72QM4VJRTIA1',
+  whatsappChannelUrl: 'https://whatsapp.com/channel/0029VbEGCJ3EgGfNE6THN73q',
+  smsSupportNumber: '0743697677',
+  sponsorName: 'ONLINEPAY DIGITAL PLATFORM',
+  sponsorUrl: 'https://onlinepay-d7wjpyve.manus.space/',
+  registrationExternalUrl: 'https://onlinepayplatform.com/register?ref=Didan255',
+  instagramUrl: 'https://www.instagram.com/odp_tanzania?stkn=c3M0aDFiajM3Z3J3',
+  tiktokUrl: 'https://www.tiktok.com/@swahiliearn.site?_r=1&_t=ZS-9AKTTdEWwMA',
+  facebookUrl: 'https://www.facebook.com/share/1HgRiAX6J2/',
+  capitalFeeNotice: 'Lipia mtaji wa 16,000/= ili kupata akaunti kamili yenye uwezo kutoa pesa zako , pesa ya mtaji ina wezesha mifumo ya miamala na kibenki ya kampuni kufanya kazi'
 };
 
-export interface VisitorLead {
-  id: string;
-  fullName: string;
-  phone: string;
-  region: string;
-  timestamp: string;
-  status: 'new' | 'verified' | 'withdrawn';
-}
+const INITIAL_VIRTUAL_ACCOUNTS: RegisteredVirtualAccount[] = [
+  { id: 'va-1', fullName: 'Hamisi Bakari', phone: '0754892144', registeredAt: 'Dakika 12 zilizopita', balanceTzs: 160000, status: 'active' },
+  { id: 'va-2', fullName: 'Rehema Juma', phone: '0714992831', registeredAt: 'Dakika 35 zilizopita', balanceTzs: 80000, status: 'active' },
+  { id: 'va-3', fullName: 'Kelvin Mwangi', phone: '0722104599', registeredAt: 'Saa 1 iliyopita', balanceTzs: 240000, status: 'active' },
+  { id: 'va-4', fullName: 'Zuhura Ally', phone: '0768400192', registeredAt: 'Saa 2 zilizopita', balanceTzs: 95000, status: 'active' }
+];
 
 class AppStorage {
   private listeners: Set<() => void> = new Set();
-
   private inMemoryStore: Record<string, string> = {};
 
   constructor() {
@@ -88,24 +91,11 @@ class AppStorage {
       if (!this.getItem(KEYS.ADMIN_SETTINGS)) {
         this.setItem(KEYS.ADMIN_SETTINGS, JSON.stringify(DEFAULT_ADMIN_SETTINGS));
       }
-      if (!this.getItem(KEYS.WITHDRAWALS)) {
-        const initialWithdrawals: WithdrawalRequest[] = [
-          {
-            id: 'tx-prev-101',
-            userId: 'usr-default-01',
-            userName: 'Juma Bakari Mwenda',
-            phone: '0754892144',
-            network: 'mpesa',
-            amountTzs: 160000,
-            feeTzs: 2400,
-            netAmountTzs: 157600,
-            status: 'completed',
-            requestedAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-            transactionId: 'MPESA-TX948194',
-            note: 'Malipo yamekamilika kwa ufanisi'
-          }
-        ];
-        this.setItem(KEYS.WITHDRAWALS, JSON.stringify(initialWithdrawals));
+      if (!this.getItem(KEYS.VERIFIED_PAYOUTS)) {
+        this.setItem(KEYS.VERIFIED_PAYOUTS, JSON.stringify(INITIAL_VERIFIED_PAYOUTS));
+      }
+      if (!this.getItem(KEYS.VIRTUAL_ACCOUNTS)) {
+        this.setItem(KEYS.VIRTUAL_ACCOUNTS, JSON.stringify(INITIAL_VIRTUAL_ACCOUNTS));
       }
     } catch (err) {
       console.warn('Storage initialization fallback:', err);
@@ -139,6 +129,50 @@ class AppStorage {
     this.setItem(KEYS.USER_PROFILE, JSON.stringify(updated));
     this.notify();
     return updated;
+  }
+
+  public registerVirtualAccount(fullName: string, phone: string): UserProfile {
+    const user = this.updateUserProfile({
+      fullName,
+      phone,
+      isRegistered: true
+    });
+
+    // Save to virtual accounts list for admin portal
+    const list = this.getVirtualAccounts();
+    const existingIndex = list.findIndex(a => a.phone === phone);
+    const newEntry: RegisteredVirtualAccount = {
+      id: 'va-' + Math.random().toString(36).substring(2, 9),
+      fullName,
+      phone,
+      registeredAt: 'Sasa hivi',
+      balanceTzs: user.balanceTzs,
+      status: 'active'
+    };
+
+    if (existingIndex >= 0) {
+      list[existingIndex] = newEntry;
+    } else {
+      list.unshift(newEntry);
+    }
+    this.setItem(KEYS.VIRTUAL_ACCOUNTS, JSON.stringify(list));
+    this.notify();
+    return user;
+  }
+
+  public getVirtualAccounts(): RegisteredVirtualAccount[] {
+    try {
+      const data = this.getItem(KEYS.VIRTUAL_ACCOUNTS);
+      return data ? JSON.parse(data) : INITIAL_VIRTUAL_ACCOUNTS;
+    } catch {
+      return INITIAL_VIRTUAL_ACCOUNTS;
+    }
+  }
+
+  public deleteVirtualAccount(id: string) {
+    const list = this.getVirtualAccounts().filter(a => a.id !== id);
+    this.setItem(KEYS.VIRTUAL_ACCOUNTS, JSON.stringify(list));
+    this.notify();
   }
 
   public creditReward(amountTzs: number): UserProfile {
@@ -185,65 +219,30 @@ class AppStorage {
     this.saveForeignLearners(list);
   }
 
-  // --- Withdrawals ---
-  public getWithdrawals(): WithdrawalRequest[] {
+  // --- Verified African Payouts ---
+  public getVerifiedPayouts(): VerifiedAfricanPayout[] {
     try {
-      const data = this.getItem(KEYS.WITHDRAWALS);
-      return data ? JSON.parse(data) : [];
+      const data = this.getItem(KEYS.VERIFIED_PAYOUTS);
+      return data ? JSON.parse(data) : INITIAL_VERIFIED_PAYOUTS;
     } catch {
-      return [];
+      return INITIAL_VERIFIED_PAYOUTS;
     }
   }
 
-  public requestWithdrawal(req: Omit<WithdrawalRequest, 'id' | 'requestedAt' | 'transactionId' | 'status'>): WithdrawalRequest {
-    const user = this.getUserProfile();
-    const withdrawals = this.getWithdrawals();
-    
-    const newReq: WithdrawalRequest = {
-      ...req,
-      id: 'tx-' + Math.random().toString(36).substring(2, 9),
-      requestedAt: new Date().toISOString(),
-      transactionId: 'SWE-' + Math.floor(100000 + Math.random() * 900000),
-      status: 'pending'
-    };
-
-    // Deduct available balance
-    this.updateUserProfile({
-      balanceTzs: Math.max(0, user.balanceTzs - req.amountTzs),
-      pendingTzs: user.pendingTzs + req.amountTzs
-    });
-
-    withdrawals.unshift(newReq);
-    this.setItem(KEYS.WITHDRAWALS, JSON.stringify(withdrawals));
+  public saveVerifiedPayouts(payouts: VerifiedAfricanPayout[]) {
+    this.setItem(KEYS.VERIFIED_PAYOUTS, JSON.stringify(payouts));
     this.notify();
-    return newReq;
   }
 
-  public updateWithdrawalStatus(id: string, status: WithdrawalRequest['status'], note?: string) {
-    const withdrawals = this.getWithdrawals();
-    const target = withdrawals.find(w => w.id === id);
-    if (!target) return;
+  public addVerifiedPayout(payout: VerifiedAfricanPayout) {
+    const list = this.getVerifiedPayouts();
+    list.unshift(payout);
+    this.saveVerifiedPayouts(list);
+  }
 
-    target.status = status;
-    if (note) target.note = note;
-
-    const user = this.getUserProfile();
-    if (status === 'completed' || status === 'approved') {
-      // Completed payout
-      this.updateUserProfile({
-        pendingTzs: Math.max(0, user.pendingTzs - target.amountTzs),
-        totalWithdrawnTzs: user.totalWithdrawnTzs + target.amountTzs
-      });
-    } else if (status === 'rejected') {
-      // Refund balance
-      this.updateUserProfile({
-        balanceTzs: user.balanceTzs + target.amountTzs,
-        pendingTzs: Math.max(0, user.pendingTzs - target.amountTzs)
-      });
-    }
-
-    this.setItem(KEYS.WITHDRAWALS, JSON.stringify(withdrawals));
-    this.notify();
+  public deleteVerifiedPayout(id: string) {
+    const list = this.getVerifiedPayouts().filter(p => p.id !== id);
+    this.saveVerifiedPayouts(list);
   }
 
   // --- Sessions History ---
@@ -279,36 +278,6 @@ class AppStorage {
     this.setItem(KEYS.ADMIN_SETTINGS, JSON.stringify(updated));
     this.notify();
     return updated;
-  }
-
-  // --- Leads / Visitor Logs ---
-  public getLeads(): VisitorLead[] {
-    try {
-      const data = this.getItem(KEYS.LEADS);
-      if (data) return JSON.parse(data);
-      // Default sample leads
-      const sample: VisitorLead[] = [
-        { id: 'lead-1', fullName: 'Hussein Rashidi', phone: '0712399821', region: 'Dar es Salaam', timestamp: 'Dakika 10 zilizopita', status: 'verified' },
-        { id: 'lead-2', fullName: 'Zawadi Mwamburi', phone: '0765991823', region: 'Arusha', timestamp: 'Dakika 25 zilizopita', status: 'new' },
-        { id: 'lead-3', fullName: 'Moses Kibona', phone: '0788231902', region: 'Mwanza', timestamp: 'Saa 1 iliyopita', status: 'withdrawn' }
-      ];
-      this.setItem(KEYS.LEADS, JSON.stringify(sample));
-      return sample;
-    } catch {
-      return [];
-    }
-  }
-
-  public addLead(lead: Omit<VisitorLead, 'id' | 'timestamp' | 'status'>) {
-    const leads = this.getLeads();
-    leads.unshift({
-      ...lead,
-      id: 'lead-' + Math.random().toString(36).substring(2, 8),
-      timestamp: 'Sasa hivi',
-      status: 'new'
-    });
-    this.setItem(KEYS.LEADS, JSON.stringify(leads));
-    this.notify();
   }
 
   // --- Language state ---

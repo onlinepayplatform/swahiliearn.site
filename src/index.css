@@ -25,3 +25,32 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #94A3B8;
 }
+
+/* Infinite Vertical Marquee */
+@keyframes marquee-vertical {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.animate-marquee-vertical {
+  animation: marquee-vertical 32s linear infinite;
+}
+
+/* Orange Glow animation */
+@keyframes orange-glow {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(255, 122, 0, 0.6), 0 0 16px rgba(255, 122, 0, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 16px rgba(255, 122, 0, 0.9), 0 0 28px rgba(255, 122, 0, 0.7);
+  }
+}
+
+.glow-orange {
+  color: #FFA500;
+  animation: orange-glow 2.5s ease-in-out infinite;
+}

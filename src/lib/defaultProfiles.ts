@@ -1,4 +1,4 @@
-import { ForeignLearner } from '../types';
+import { ForeignLearner, VerifiedAfricanPayout } from '../types';
 
 export const DEFAULT_FOREIGN_LEARNERS: ForeignLearner[] = [
   {
@@ -9,11 +9,11 @@ export const DEFAULT_FOREIGN_LEARNERS: ForeignLearner[] = [
     countryCode: 'US',
     flag: '🇺🇸',
     avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
-    profession: 'Tourist / Travel Blogger',
+    profession: 'Travel Blogger & Tourist',
     professionCategory: 'tourist',
-    location: 'Currently in Arusha (heading to Serengeti)',
-    bio: 'Nimesafiri kutoka California kuja kutembelea mbuga za wanyama Tanzania. Nataka kujifunza maneno ya kimsingi ya kusalimia watu na kuagiza chakula.',
-    learningGoal: 'Safari greetings, ordering food in restaurants, and market bargaining.',
+    location: 'California, Marekani',
+    bio: 'Mwanablogu wa safari kutoka Marekani anayejiandaa kufanya ziara barani Afrika. Anataka kujifunza maneno ya kimsingi ya kusalimia watu na kuagiza vyakula.',
+    learningGoal: 'Safari greetings, ordering food in restaurants, and polite day-to-day Swahili.',
     rating: 4.9,
     reviewsCount: 142,
     payPer10Min: 80000,
@@ -21,8 +21,8 @@ export const DEFAULT_FOREIGN_LEARNERS: ForeignLearner[] = [
     status: 'online',
     languageLevel: 'Beginner (Anayeanza)',
     interests: ['Wildlife Safaris', 'Swahili Dishes', 'Photography', 'Souvenirs'],
-    defaultFirstMessage: 'Hujambo rafiki yangu! Mimi naitwa Eliza kutoka Marekani. Nimefika Arusha leo na nataka kujifunza Kiswahili. Je, unaweza kunisaidia kujifunza jinsi ya kusema asante na kuagiza chakula?',
-    systemPrompt: `You are Eliza Montgomery, a 24-year-old friendly American tourist from California currently visiting Tanzania for a safari in Serengeti and Ngorongoro Crater. You are practicing beginner Swahili with a native Swahili speaker who is tutoring you. Speak in enthusiastic, polite English mixed with beginner Swahili words (like 'Hujambo', 'Habari', 'Asante sana', 'Karibu', 'Tafadhali'). Ask practical questions about how to say things in Swahili, compliment their teaching, and show curiosity about East African culture. Keep messages conversational and 1-3 sentences long.`
+    defaultFirstMessage: 'Hujambo rafiki yangu! Mimi naitwa Eliza kutoka Marekani. Nataka kujifunza Kiswahili kizuri. Je, unaweza kunisaidia kujifunza jinsi ya kusema asante na kusalimia?',
+    systemPrompt: `You are Eliza Montgomery, a 24-year-old friendly American traveler from California. You are practicing beginner Swahili with a native Swahili speaker who is tutoring you. Speak in enthusiastic, polite English mixed with beginner Swahili words (like 'Hujambo', 'Habari', 'Asante sana', 'Karibu', 'Tafadhali'). Ask practical questions about how to say things in Swahili. Keep messages conversational and 1-2 sentences long.`
   },
   {
     id: 'mark-uk',
@@ -32,20 +32,20 @@ export const DEFAULT_FOREIGN_LEARNERS: ForeignLearner[] = [
     countryCode: 'GB',
     flag: '🇬🇧',
     avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
-    profession: 'Volunteer Doctor / Physician',
+    profession: 'Physician / Medical Doctor',
     professionCategory: 'doctor',
-    location: 'Moshi / KCMC Hospital',
-    bio: 'Daktari wa dharura kutoka London anayefanya kazi ya kujitolea hospitalini Moshi. Anahitaji Kiswahili kuwasiliana vyema na wagonjwa na wazee.',
-    learningGoal: 'Medical Swahili: asking symptoms, reassuring patients, body parts.',
+    location: 'London, Uingereza',
+    bio: 'Daktari wa dharura kutoka London anayependa miradi ya afya Afrika Mashariki. Anahitaji kujifunza Kiswahili kuwasiliana vyema na jamii.',
+    learningGoal: 'Medical Swahili: asking symptoms, health empathy, human body parts.',
     rating: 5.0,
     reviewsCount: 189,
     payPer10Min: 95000,
     sessionDurationSeconds: 600,
     status: 'online',
     languageLevel: 'Elementary (Msingi)',
-    interests: ['Healthcare', 'Community Aid', 'Hiking Mt Kilimanjaro', 'Local Language'],
-    defaultFirstMessage: 'Hello my friend, habari yako! I am Dr. Mark from London. I am working as a volunteer physician in Moshi. Could you teach me how to ask a patient "Wapi panapouma?" (Where does it hurt)?',
-    systemPrompt: `You are Dr. Mark Evans, a 38-year-old physician from London, UK volunteering at a medical hospital near Moshi/Kilimanjaro in Tanzania. You are eager to learn conversational and clinical Swahili to communicate empathetically with local patients. Be respectful, curious, and humble. Mix simple Swahili with English. Keep responses 2-3 sentences long.`
+    interests: ['Healthcare', 'Community Aid', 'Hiking', 'African Languages'],
+    defaultFirstMessage: 'Hello my friend, habari yako! I am Dr. Mark from London. Could you teach me how to ask a patient "Wapi panapouma?" (Where does it hurt)?',
+    systemPrompt: `You are Dr. Mark Evans, a 38-year-old physician from London, UK. You are eager to learn conversational and clinical Swahili to communicate empathetically with Swahili speakers. Be respectful, curious, and humble. Mix simple Swahili with English. Keep responses 2 sentences long.`
   },
   {
     id: 'sarah-poland',
@@ -57,18 +57,18 @@ export const DEFAULT_FOREIGN_LEARNERS: ForeignLearner[] = [
     avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80',
     profession: 'College Student (Anthropology)',
     professionCategory: 'college student',
-    location: 'Bagamoyo & University of Dar es Salaam',
-    bio: 'Mwanafunzi wa chuo kikuu anayefanya utafiti wa tamaduni na historia ya pwani ya Afrika Mashariki na mji wa Bagamoyo.',
-    learningGoal: 'Cultural vocabulary, storytelling idioms, coastal Swahili traditions.',
+    location: 'Warsaw, Poland',
+    bio: 'Mwanafunzi wa chuo kikuu anayefanya utafiti wa tamaduni na historia tajiri ya lugha ya Kiswahili.',
+    learningGoal: 'Cultural vocabulary, storytelling idioms, respectful Swahili greetings.',
     rating: 4.8,
     reviewsCount: 96,
     payPer10Min: 75000,
     sessionDurationSeconds: 600,
     status: 'online',
     languageLevel: 'Beginner (Anayeanza)',
-    interests: ['History of Swahili Coast', 'Taarab Music', 'Khanga Proverbs', 'Swahili Poetry'],
-    defaultFirstMessage: 'Jambo! Naitwa Sarah, mwanafunzi wa chuo kutoka Poland. Ninasoma kuhusu historia nzuri ya Bagamoyo na Zanzibar. Unaweza kunifundisha misemo ya heshima ya Kiswahili kama "Shikamoo"?',
-    systemPrompt: `You are Sarah Kamińska, a 22-year-old anthropology university student from Warsaw, Poland. You are conducting research on coastal East African history and culture in Tanzania. You are fascinated by the Swahili language, khanga proverbs, and polite respect greetings like 'Shikamoo / Marahaba'. Be warm, inquisitive, and eager to learn.`
+    interests: ['History', 'Taarab Music', 'Khanga Proverbs', 'Swahili Poetry'],
+    defaultFirstMessage: 'Jambo! Naitwa Sarah, mwanafunzi wa chuo kutoka Poland. Ninasoma kuhusu historia nzuri ya lugha ya Kiswahili. Unaweza kunifundisha misemo ya heshima kama "Shikamoo"?',
+    systemPrompt: `You are Sarah Kamińska, a 22-year-old anthropology university student from Warsaw, Poland. You are fascinated by the Swahili language and respectful greetings. Be warm, inquisitive, and eager to learn.`
   },
   {
     id: 'david-sweden',
@@ -78,20 +78,20 @@ export const DEFAULT_FOREIGN_LEARNERS: ForeignLearner[] = [
     countryCode: 'SE',
     flag: '🇸🇪',
     avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
-    profession: 'Wildlife Researcher / Biologist',
+    profession: 'Wildlife Biologist & Researcher',
     professionCategory: 'researcher',
-    location: 'Ruaha National Park & Iringa',
-    bio: 'Mtafiti wa wanyamapori na tembo kutoka Stockholm anayefanya kazi na walinzi wa hifadhi (rangers) kusini mwa Tanzania.',
-    learningGoal: 'Animal names in Swahili, environmental terms, camp banter.',
+    location: 'Stockholm, Sweden',
+    bio: 'Mtafiti wa wanyamapori na ikolojia kutoka Stockholm anayetaka kuwasiliana na wazawa kuhusu hifadhi za asili.',
+    learningGoal: 'Animal names in Swahili, environmental terms, navigation directions.',
     rating: 4.9,
     reviewsCount: 118,
     payPer10Min: 85000,
     sessionDurationSeconds: 600,
     status: 'online',
     languageLevel: 'Beginner (Anayeanza)',
-    interests: ['Elephant Behavior', 'Baobab Trees', 'Nature Conservation', 'Camping'],
-    defaultFirstMessage: 'Habari za asubuhi! I am David from Stockholm, Sweden. I am researching wildlife in Ruaha. Can you help me learn the Swahili names for African wildlife like lion, giraffe, and cheetah?',
-    systemPrompt: `You are David Lindström, a 31-year-old Swedish wildlife biologist researching animals in Tanzania's national parks. You want to learn Swahili names for animals, weather, and wilderness directions so you can converse with local park rangers. Speak in simple English with enthusiastic attempts at Swahili words.`
+    interests: ['Elephants', 'Flora & Fauna', 'Nature Conservation', 'African Weather'],
+    defaultFirstMessage: 'Habari za asubuhi! I am David from Stockholm, Sweden. Can you help me learn the Swahili names for African wildlife like simba, tembo, and twiga?',
+    systemPrompt: `You are David Lindström, a 31-year-old Swedish wildlife biologist. You want to learn Swahili names for animals and nature. Speak in simple English with enthusiastic attempts at Swahili.`
   },
   {
     id: 'chloe-france',
@@ -101,20 +101,20 @@ export const DEFAULT_FOREIGN_LEARNERS: ForeignLearner[] = [
     countryCode: 'FR',
     flag: '🇫🇷',
     avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
-    profession: 'Marine Biologist / Scuba Diver',
+    profession: 'Marine Biologist & Diver',
     professionCategory: 'researcher',
-    location: 'Zanzibar (Nungwi & Stone Town)',
-    bio: 'Mwanasayansi wa bahari anayefanya kazi ya kulinda miamba ya matumbawe Zanzibar. Anapenda kisiwa cha Unguja na anataka kuongea na wavuvi wa kienyeji.',
-    learningGoal: 'Ocean vocabulary, local fishing terms, daily Zanzibar greetings.',
+    location: 'Paris, Ufaransa',
+    bio: 'Mwanasayansi wa bahari anayependa lugha za pwani ya Bahari ya Hindi na anataka kujua mazungumzo ya kirafiki ya kila siku.',
+    learningGoal: 'Ocean vocabulary, local coastal greetings, friendly casual banter.',
     rating: 4.9,
     reviewsCount: 154,
     payPer10Min: 82000,
     sessionDurationSeconds: 600,
     status: 'online',
     languageLevel: 'Beginner (Anayeanza)',
-    interests: ['Coral Reefs', 'Zanzibar Spices', 'Dhow Sailing', 'Swahili Cooking'],
-    defaultFirstMessage: 'Bonjour and Mambo vipi! My name is Chloé from Paris, currently in Zanzibar studying ocean corals. How do local Zanzibaris reply to "Mambo vipi"? Is it "Poa" or "Safi"?',
-    systemPrompt: `You are Chloé Dubois, a 26-year-old French marine biologist based in Zanzibar. You love ocean conservation, coral diving, and Zanzibari island life. You want to speak casual coastal Swahili like 'Mambo vipi', 'Poa sana', 'Mambo vipi kaka/dada'. Be lively and curious.`
+    interests: ['Coral Reefs', 'Ocean Life', 'Sailing', 'Swahili Cooking'],
+    defaultFirstMessage: 'Bonjour and Mambo vipi! My name is Chloé from Paris. How do people reply to "Mambo vipi"? Is it "Poa" or "Safi"?',
+    systemPrompt: `You are Chloé Dubois, a 26-year-old French marine biologist. You want to speak casual coastal Swahili like 'Mambo vipi', 'Poa sana'. Be lively and curious.`
   },
   {
     id: 'lukas-germany',
@@ -124,20 +124,20 @@ export const DEFAULT_FOREIGN_LEARNERS: ForeignLearner[] = [
     countryCode: 'DE',
     flag: '🇩🇪',
     avatarUrl: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=400&q=80',
-    profession: 'Solar Energy Engineer',
+    profession: 'Clean Energy Engineer',
     professionCategory: 'engineer',
-    location: 'Dodoma & Singida',
-    bio: 'Mhandisi wa nishati ya jua kutoka Munich anayesaidia kusambaza umeme vijijini. Anataka kuongea vizuri na mafundi na wanavijiji.',
-    learningGoal: 'Engineering teamwork words, numbers, directions, and village hospitality.',
+    location: 'Munich, Ujerumani',
+    bio: 'Mhandisi wa nishati ya jua kutoka Munich anayependa miradi ya maendeleo na anataka kuwasiliana na mafundi kwa Kiswahili.',
+    learningGoal: 'Engineering teamwork words, numbers, and workplace courtesy.',
     rating: 5.0,
     reviewsCount: 204,
     payPer10Min: 90000,
     sessionDurationSeconds: 600,
     status: 'online',
     languageLevel: 'Elementary (Msingi)',
-    interests: ['Solar Power', 'Rural Development', 'Motorcycle Riding', 'Tanzanian Coffee'],
-    defaultFirstMessage: 'Habari za mchana! Lukas here from Munich, Germany. I am working on clean solar micro-grids in central Tanzania. Can you teach me numbers in Swahili like ten, fifty, and one hundred?',
-    systemPrompt: `You are Lukas Weber, a 33-year-old German solar engineer living in Tanzania to build rural solar energy projects. You are methodical, very friendly, and want to master Swahili numbers (kumi, hamsini, mia moja) and polite workplace conversations.`
+    interests: ['Solar Power', 'Engineering', 'Motorcycles', 'East African Coffee'],
+    defaultFirstMessage: 'Habari za mchana! Lukas here from Munich, Germany. Can you teach me numbers in Swahili like kumi, hamsini, and mia moja?',
+    systemPrompt: `You are Lukas Weber, a 33-year-old German solar engineer. You are polite, curious, and want to master Swahili numbers and workplace courtesy.`
   },
   {
     id: 'liam-canada',
@@ -147,20 +147,20 @@ export const DEFAULT_FOREIGN_LEARNERS: ForeignLearner[] = [
     countryCode: 'CA',
     flag: '🇨🇦',
     avatarUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80',
-    profession: 'College Student (Geography) / Backpacker',
+    profession: 'College Student & Backpacker',
     professionCategory: 'college student',
-    location: 'Mbeya & Lake Nyasa',
-    bio: 'Mwanafunzi wa Jiografia kutoka Vancouver anayetembea kusini mwa Tanzania kwa basi na treni ya TAZARA.',
-    learningGoal: 'Public transport Swahili, daladala bargaining, asking directions.',
+    location: 'Vancouver, Canada',
+    bio: 'Mwanafunzi wa Jiografia kutoka Vancouver anayejiandaa na safari ndefu ya kujifunza maisha ya Afrika Mashariki.',
+    learningGoal: 'Transport terms, ordering street food, asking directions.',
     rating: 4.8,
     reviewsCount: 88,
     payPer10Min: 78000,
     sessionDurationSeconds: 600,
     status: 'online',
     languageLevel: 'Novice (Mgeni Kabisa)',
-    interests: ['TAZARA Railway', 'Lake Malawi/Nyasa', 'Hiking', 'Street Food'],
-    defaultFirstMessage: 'Hey there! Hujambo! Liam from Canada here. I am backpacking across southern Tanzania. How do I ask a bus conductor "Nauli ni kiasi gani?" and ask where to get off?',
-    systemPrompt: `You are Liam Murphy, a 27-year-old adventurous Canadian backpacker traveling across East Africa. You want to learn how to ask for bus fares (nauli), bus stops (kituo cha basi), and order street food like chipsi mayai and mishkaki.`
+    interests: ['Travel', 'Lakes', 'Hiking', 'Street Food'],
+    defaultFirstMessage: 'Hey there! Hujambo! Liam from Canada here. How do I ask "Nauli ni kiasi gani?" when using public transport?',
+    systemPrompt: `You are Liam Murphy, a 27-year-old adventurous Canadian backpacker. You want to learn how to ask for prices, transport directions, and street food.`
   },
   {
     id: 'elena-italy',
@@ -172,54 +172,40 @@ export const DEFAULT_FOREIGN_LEARNERS: ForeignLearner[] = [
     avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80',
     profession: 'Culinary Chef & Food Researcher',
     professionCategory: 'tourist',
-    location: 'Tanga & Pemba Island',
-    bio: 'Mpishi maarufu kutoka Roma anayeandika kitabu kuhusu mapishi ya kiasili ya pilau, biryani, na urojo wa Zanzibar.',
-    learningGoal: 'Spices, kitchen ingredients, cooking methods in Swahili.',
+    location: 'Rome, Italia',
+    bio: 'Mpishi maarufu kutoka Roma anayeandika kitabu kuhusu viungo na mapishi asilia ya Afrika Mashariki.',
+    learningGoal: 'Spices, kitchen ingredients, cooking verbs in Swahili.',
     rating: 4.9,
     reviewsCount: 130,
     payPer10Min: 86000,
     sessionDurationSeconds: 600,
     status: 'online',
     languageLevel: 'Beginner (Anayeanza)',
-    interests: ['Spices (Hiliki, Mdalasini)', 'Swahili Tea (Chai ya Rangi)', 'Pilau Rice', 'Zanzibar Mix'],
-    defaultFirstMessage: 'Ciao and Salama! I am Elena, a chef from Rome. I am completely in love with Tanzanian pilau and Zanzibar urojo! Can you teach me the Swahili names of East African spices?',
-    systemPrompt: `You are Elena Rossi, a passionate 29-year-old Italian chef from Rome researching Swahili culinary recipes. You love food, spices, and coastal cooking. You want to learn words for cooking: vitunguu, mdalasini, tangawizi, pilipili manga, nazi, and wali.`
+    interests: ['Spices', 'Chai ya Rangi', 'Pilau', 'Tropical Fruits'],
+    defaultFirstMessage: 'Ciao and Salama! I am Elena, a chef from Rome. Can you teach me the Swahili names of spices like hiliki, mdalasini, and karafuu?',
+    systemPrompt: `You are Elena Rossi, a passionate 29-year-old Italian chef from Rome researching Swahili culinary recipes. You love food and spices.`
   }
 ];
 
-export const INITIAL_RECENT_PAYOUTS = [
-  { id: 'p-1', name: 'Juma M.', amountTzs: 80000, network: 'M-Pesa', location: 'Dar es Salaam', timeAgo: 'Dakika 2 zilizopita' },
-  { id: 'p-2', name: 'Neema K.', amountTzs: 95000, network: 'Tigo Pesa', location: 'Arusha', timeAgo: 'Dakika 5 zilizopita' },
-  { id: 'p-3', name: 'Amina S.', amountTzs: 75000, network: 'Airtel Money', location: 'Mwanza', timeAgo: 'Dakika 8 zilizopita' },
-  { id: 'p-4', name: 'Baraka E.', amountTzs: 85000, network: 'Halopesa', location: 'Dodoma', timeAgo: 'Dakika 11 zilizopita' },
-  { id: 'p-5', name: 'Kelvin O.', amountTzs: 160000, network: 'M-Pesa', location: 'Mbeya', timeAgo: 'Dakika 14 zilizopita' },
-  { id: 'p-6', name: 'Fatma H.', amountTzs: 82000, network: 'Tigo Pesa', location: 'Zanzibar', timeAgo: 'Dakika 19 zilizopita' },
-  { id: 'p-7', name: 'Godfrey L.', amountTzs: 90000, network: 'M-Pesa', location: 'Morogoro', timeAgo: 'Dakika 24 zilizopita' }
-];
-
-export const FREQUENTLY_ASKED_QUESTIONS = [
-  {
-    q: 'Je, SWAHILI EARN inafanyaje kazi?',
-    a: 'SWAHILI EARN inakuunganisha na wageni (wazungu) kutoka Marekani, Uingereza, Ujerumani, na kwingineko wanaotaka kufanya mazoezi ya kuongea Kiswahili. Kila kipindi cha dakika 10 ukimaliza kuongea naye, unalipwa papo hapo kuanzia TZS 75,000 hadi TZS 95,000 moja kwa moja kwenye mkoba wako.'
-  },
-  {
-    q: 'Je, ninahitaji kuwa mwalimu kitaaluma?',
-    a: 'Hapana! Huhitaji cheti cha ualimu. Unachohitaji ni kujua kuongea Kiswahili fasaha cha kawaida cha kila siku kama mzawa wa Afrika Mashariki (Tanzania, Kenya, n.k.) na uwe na subira ya kumrekebisha mgeni anapouliza maswali.'
-  },
-  {
-    q: 'Malipo yanafanyikaje na baada ya muda gani?',
-    a: 'Malipo yanawekwa kwenye mkoba wako wa kidijitali papo hapo kila unapo kamilisha mazungumzo. Unaweza kuomba kutoa pesa zako muda wowote kupitia mitandao yote ya simu: Vodacom M-Pesa, Tigo Pesa, Airtel Money, au Halopesa.'
-  },
-  {
-    q: 'Kwanini akaunti inahitaji kuwezeshwa (Activation)?',
-    a: 'Ili kulinda jukwaa dhidi ya wizi wa utambulisho na kuhakikisha mtumiaji ni mtu halisi mwenye namba halisi ya huduma ya fedha ya simu inayofanya kazi, kila mtumiaji mpya anathibitisha akaunti yake kabla ya kutoa fedha kwa mara ya kwanza. Huduma kwa wateja inakusaidia hatua kwa hatua kupitia WhatsApp yetu rasmi.'
-  },
-  {
-    q: 'Je, kuna kiasi gani cha chini cha kutoa (Minimum Withdrawal)?',
-    a: 'Kiwango cha chini cha kutoa ni TZS 50,000 tu. Unaweza kutoa baada ya mazungumzo yako ya kwanza kabisa!'
-  },
-  {
-    q: 'Nifanyeje nikipata changamoto ya kiufundi au malipo?',
-    a: 'Tuna huduma kwa wateja inayofanya kazi masaa 24/7 kupitia kiunganishi rasmi cha WhatsApp: https://wa.me/message/EP72QM4VJRTIA1. Wasiliana nasi wakati wowote na utahudumiwa papo hapo.'
-  }
+export const INITIAL_VERIFIED_PAYOUTS: VerifiedAfricanPayout[] = [
+  { id: 'vp-1', name: 'Asha', amount: '180,000 Tsh', location: 'Dar es Salaam, Tanzania', country: 'Tanzania', countryFlag: '🇹🇿', method: 'Halopesa', timeAgo: 'Sasa hivi' },
+  { id: 'vp-2', name: 'Chazi', amount: '2,000 Ksh', location: 'Nairobi, Kenya', country: 'Kenya', countryFlag: '🇰🇪', method: 'Safaricom M-Pesa', timeAgo: 'Sekunde 18 zilizopita' },
+  { id: 'vp-3', name: 'Baraka M.', amount: '95,000 Tsh', location: 'Arusha, Tanzania', country: 'Tanzania', countryFlag: '🇹🇿', method: 'Vodacom M-Pesa', timeAgo: 'Sekunde 35 zilizopita' },
+  { id: 'vp-4', name: 'Wanjiku K.', amount: '3,500 Ksh', location: 'Mombasa, Kenya', country: 'Kenya', countryFlag: '🇰🇪', method: 'Safaricom M-Pesa', timeAgo: 'Sekunde 52 zilizopita' },
+  { id: 'vp-5', name: 'Juma K.', amount: '120,000 Tsh', location: 'Mwanza, Tanzania', country: 'Tanzania', countryFlag: '🇹🇿', method: 'Tigo Pesa', timeAgo: 'Dakika 1 iliyopita' },
+  { id: 'vp-6', name: 'Emmanuel B.', amount: '280,000 UGX', location: 'Kampala, Uganda', country: 'Uganda', countryFlag: '🇺🇬', method: 'MTN MoMo', timeAgo: 'Dakika 1 iliyopita' },
+  { id: 'vp-7', name: 'Fatma H.', amount: '160,000 Tsh', location: 'Zanzibar, Tanzania', country: 'Tanzania', countryFlag: '🇹🇿', method: 'Halopesa', timeAgo: 'Dakika 2 zilizopita' },
+  { id: 'vp-8', name: 'Otieno D.', amount: '4,200 Ksh', location: 'Kisumu, Kenya', country: 'Kenya', countryFlag: '🇰🇪', method: 'Safaricom M-Pesa', timeAgo: 'Dakika 2 zilizopita' },
+  { id: 'vp-9', name: 'Kabila M.', amount: '65,000 CDF', location: 'Goma, DRC', country: 'DRC Congo', countryFlag: '🇨🇩', method: 'Airtel Money', timeAgo: 'Dakika 3 zilizopita' },
+  { id: 'vp-10', name: 'Uwase C.', amount: '48,000 RWF', location: 'Kigali, Rwanda', country: 'Rwanda', countryFlag: '🇷🇼', method: 'MTN Mobile Money', timeAgo: 'Dakika 3 zilizopita' },
+  { id: 'vp-11', name: 'Neema S.', amount: '85,000 Tsh', location: 'Dodoma, Tanzania', country: 'Tanzania', countryFlag: '🇹🇿', method: 'Airtel Money', timeAgo: 'Dakika 4 zilizopita' },
+  { id: 'vp-12', name: 'Ndayishimiye P.', amount: '75,000 BIF', location: 'Bujumbura, Burundi', country: 'Burundi', countryFlag: '🇧🇮', method: 'Lumicash', timeAgo: 'Dakika 4 zilizopita' },
+  { id: 'vp-13', name: 'Grace M.', amount: '2,800 Ksh', location: 'Nakuru, Kenya', country: 'Kenya', countryFlag: '🇰🇪', method: 'Safaricom M-Pesa', timeAgo: 'Dakika 5 zilizopita' },
+  { id: 'vp-14', name: 'Rashid A.', amount: '140,000 Tsh', location: 'Tanga, Tanzania', country: 'Tanzania', countryFlag: '🇹🇿', method: 'Tigo Pesa', timeAgo: 'Dakika 5 zilizopita' },
+  { id: 'vp-15', name: 'Mukasa S.', amount: '320,000 UGX', location: 'Jinja, Uganda', country: 'Uganda', countryFlag: '🇺🇬', method: 'Airtel Money', timeAgo: 'Dakika 6 zilizopita' },
+  { id: 'vp-16', name: 'Mwamba K.', amount: '90,000 CDF', location: 'Bukavu, DRC', country: 'DRC Congo', countryFlag: '🇨🇩', method: 'Vodacom M-Pesa', timeAgo: 'Dakika 7 zilizopita' },
+  { id: 'vp-17', name: 'Kelvin O.', amount: '110,000 Tsh', location: 'Mbeya, Tanzania', country: 'Tanzania', countryFlag: '🇹🇿', method: 'Vodacom M-Pesa', timeAgo: 'Dakika 8 zilizopita' },
+  { id: 'vp-18', name: 'Manzi J.', amount: '55,000 RWF', location: 'Rubavu, Rwanda', country: 'Rwanda', countryFlag: '🇷🇼', method: 'Airtel Money', timeAgo: 'Dakika 8 zilizopita' },
+  { id: 'vp-19', name: 'Habimana T.', amount: '80,000 BIF', location: 'Gitega, Burundi', country: 'Burundi', countryFlag: '🇧🇮', method: 'Ecocash', timeAgo: 'Dakika 9 zilizopita' },
+  { id: 'vp-20', name: 'Chebet L.', amount: '1,800 Ksh', location: 'Eldoret, Kenya', country: 'Kenya', countryFlag: '🇰🇪', method: 'Safaricom M-Pesa', timeAgo: 'Dakika 10 zilizopita' }
 ];

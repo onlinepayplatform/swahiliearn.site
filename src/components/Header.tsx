@@ -1,21 +1,16 @@
 import React from 'react';
-import { UserProfile } from '../types';
-import { Globe, Shield, MessageSquare, Sparkles } from 'lucide-react';
+import { Globe, MessageSquare, Sparkles } from 'lucide-react';
 
 interface HeaderProps {
-  user: UserProfile;
   currentTab: string;
   onNavigate: (tab: string) => void;
-  onOpenAuth: () => void;
   lang: 'sw' | 'en';
   onToggleLang: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  user,
   currentTab,
   onNavigate,
-  onOpenAuth,
   lang,
   onToggleLang
 }) => {
@@ -49,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({
           <nav className="hidden md:flex items-center gap-1 lg:gap-2">
             <button
               onClick={() => onNavigate('home')}
-              className={`px-3 py-2 text-sm font-semibold rounded-lg transition-colors ${
+              className={`px-3 py-2 text-sm font-semibold rounded-lg transition-colors cursor-pointer ${
                 currentTab === 'home'
                   ? 'text-[#0066FF] bg-blue-50'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
@@ -59,7 +54,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
             <button
               onClick={() => onNavigate('learners')}
-              className={`px-3 py-2 text-sm font-semibold rounded-lg transition-colors ${
+              className={`px-3 py-2 text-sm font-semibold rounded-lg transition-colors cursor-pointer ${
                 currentTab === 'learners'
                   ? 'text-[#0066FF] bg-blue-50'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
@@ -67,50 +62,25 @@ export const Header: React.FC<HeaderProps> = ({
             >
               {lang === 'sw' ? 'Wazungu Waliopo' : 'Foreign Learners'}
             </button>
-            <button
-              onClick={() => onNavigate('admin')}
-              className={`px-2.5 py-2 text-xs font-semibold rounded-lg transition-colors inline-flex items-center gap-1.5 ${
-                currentTab === 'admin'
-                  ? 'text-purple-700 bg-purple-50 border border-purple-200'
-                  : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
-              }`}
-              title="Admin Portal"
-            >
-              <Shield className="w-3.5 h-3.5" />
-              <span>Admin</span>
-            </button>
           </nav>
 
-          {/* Right Action: Language + User Profile + CTA */}
+          {/* Right Action: Language + CTA Button */}
           <div className="flex items-center gap-2 sm:gap-3">
 
             {/* Language Switcher */}
             <button
               onClick={onToggleLang}
-              className="hidden sm:flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-slate-900 py-1.5 px-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
+              className="flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-slate-900 py-1.5 px-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer"
               title="Badili Lugha / Toggle Language"
             >
               <Globe className="w-3.5 h-3.5 text-slate-500" />
               <span>{lang.toUpperCase()}</span>
             </button>
 
-            {/* User Profile / Login Avatar */}
-            <button
-              onClick={onOpenAuth}
-              className="flex items-center gap-2 py-1.5 px-2.5 sm:px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition-colors shadow-2xs"
-            >
-              <div className="w-7 h-7 rounded-full bg-[#0066FF] text-white flex items-center justify-center text-xs font-bold">
-                {user.fullName ? user.fullName.charAt(0) : 'U'}
-              </div>
-              <span className="hidden lg:inline text-xs font-semibold text-slate-800 max-w-[100px] truncate">
-                {user.fullName || 'Akaunti'}
-              </span>
-            </button>
-
-            {/* Quick CTA button */}
+            {/* Primary Action Button */}
             <button
               onClick={() => onNavigate('learners')}
-              className="hidden xl:inline-flex items-center gap-1.5 bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-bold py-2 px-3.5 rounded-xl shadow-xs transition-colors"
+              className="inline-flex items-center gap-1.5 bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-xs transition-colors cursor-pointer"
             >
               <MessageSquare className="w-3.5 h-3.5" />
               <span>{lang === 'sw' ? 'Anza Kufundisha' : 'Start Tutoring'}</span>

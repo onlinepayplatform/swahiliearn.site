@@ -11,7 +11,7 @@ export interface ForeignLearner {
   avatarUrl: string;
   profession: string;
   professionCategory: LearnerProfession;
-  location: string;
+  location: string; // Origin location like California, USA or London, UK
   bio: string;
   learningGoal: string;
   rating: number;
@@ -48,54 +48,47 @@ export interface UserSession {
   messagesCount: number;
 }
 
-export type MobileNetwork = 'mpesa' | 'tigopesa' | 'airtel' | 'halopesa';
-
-export interface WithdrawalRequest {
-  id: string;
-  userId: string;
-  userName: string;
-  phone: string;
-  network: MobileNetwork;
-  amountTzs: number;
-  feeTzs: number;
-  netAmountTzs: number;
-  status: 'pending' | 'approved' | 'rejected' | 'completed';
-  requestedAt: string;
-  transactionId: string;
-  note?: string;
-}
-
 export interface UserProfile {
   id: string;
   fullName: string;
   phone: string;
-  region: string;
   balanceTzs: number;
   totalEarnedTzs: number;
-  pendingTzs: number;
-  totalWithdrawnTzs: number;
-  isActivated: boolean;
-  activationFeeTzs: number;
   completedSessionsCount: number;
+  isRegistered: boolean;
   joinedDate: string;
 }
 
 export interface AdminSettings {
   adminPasscode: string;
-  whatsappUrl: string;
-  supportPhone: string;
-  minWithdrawalTzs: number;
-  activationNotice: string;
-  bannerMessage: string;
-  liveVisitorsBase: number;
+  whatsappSupportUrl: string;
+  whatsappChannelUrl: string;
+  smsSupportNumber: string;
   sponsorName: string;
+  sponsorUrl: string;
+  registrationExternalUrl: string;
+  instagramUrl: string;
+  tiktokUrl: string;
+  facebookUrl: string;
+  capitalFeeNotice: string;
 }
 
-export interface RecentPayout {
+export interface VerifiedAfricanPayout {
   id: string;
   name: string;
-  amountTzs: number;
-  network: string;
-  location: string;
-  timeAgo: string;
+  amount: string; // e.g. "180,000 Tsh" or "2,000 Ksh"
+  location: string; // e.g. "Dar es Salaam, Tanzania"
+  country: string;
+  countryFlag: string;
+  method: string; // e.g. "Halopesa", "Safaricom M-Pesa"
+  timeAgo: string; // e.g. "Sasa hivi", "Sekunde 15 zilizopita"
+}
+
+export interface RegisteredVirtualAccount {
+  id: string;
+  fullName: string;
+  phone: string;
+  registeredAt: string;
+  balanceTzs: number;
+  status: 'active' | 'pending_capital';
 }

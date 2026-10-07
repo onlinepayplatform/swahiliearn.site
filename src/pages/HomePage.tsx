@@ -1,38 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import { ForeignLearner, UserProfile } from '../types';
-import { FREQUENTLY_ASKED_QUESTIONS } from '../lib/defaultProfiles';
+import { ForeignLearner, UserProfile, VerifiedAfricanPayout, AdminSettings } from '../types';
+import { VirtualAccountSection } from '../components/VirtualAccountSection';
+import { VerifiedPayoutsWindow } from '../components/VerifiedPayoutsWindow';
+import { HomepageCustomerCarePopup } from '../components/HomepageCustomerCarePopup';
+import { WithdrawalModal } from '../components/WithdrawalModal';
 import {
   MessageSquare,
-  Users,
   CheckCircle2,
-  ChevronDown,
-  Sparkles,
   ArrowRight,
   MapPin,
-  Clock,
   Star,
-  Quote,
-  Activity,
-  Headphones
+  Sparkles,
+  ShieldAlert
 } from 'lucide-react';
 
 interface HomePageProps {
   learners: ForeignLearner[];
   user: UserProfile;
+  verifiedPayouts: VerifiedAfricanPayout[];
+  adminSettings: AdminSettings;
   onSelectLearner: (learner: ForeignLearner) => void;
   onNavigate: (tab: string) => void;
+  onUserUpdated: (user: UserProfile) => void;
   lang: 'sw' | 'en';
 }
 
 export const HomePage: React.FC<HomePageProps> = ({
   learners,
   user,
+  verifiedPayouts,
+  adminSettings,
   onSelectLearner,
   onNavigate,
+  onUserUpdated,
   lang
 }) => {
-  const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [liveChatters, setLiveChatters] = useState(13240);
+  const [showWithdrawalModal, setShowWithdrawalModal] = useState(false);
 
   // Organic fluctuation of live users
   useEffect(() => {
@@ -47,14 +51,14 @@ export const HomePage: React.FC<HomePageProps> = ({
   }, []);
 
   return (
-    <div className="space-y-16 pb-20">
+    <div className="space-y-12 pb-20">
       
       {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden pt-8 pb-16 lg:py-20 bg-gradient-to-b from-blue-50/70 via-white to-slate-50 border-b border-slate-200">
+      <section className="relative overflow-hidden pt-6 pb-12 lg:py-16 bg-gradient-to-b from-blue-50/70 via-white to-slate-50 border-b border-slate-200">
         <div className="absolute inset-0 bg-[radial-gradient(#0066FF_1px,transparent_1px)] [background-size:24px_24px] opacity-10 pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="max-w-3xl mx-auto text-center space-y-6">
+          <div className="max-w-3xl mx-auto text-center space-y-5">
             
             {/* Live Status Tag */}
             <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-800 px-3.5 py-1.5 rounded-full text-xs font-semibold shadow-2xs">
@@ -67,26 +71,16 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
-              {lang === 'sw' ? (
-                <>
-                  Lipwa kwa Kufundisha <span className="text-[#0066FF]">Wazungu Kiswahili</span> na Ulipwe Papo Hapo
-                </>
-              ) : (
-                <>
-                  Earn Guaranteed Cash <span className="text-[#0066FF]">Tutoring Swahili</span> to Foreign Travelers
-                </>
-              )}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-[1.15]">
+              Lipwa kwa Kufundisha <span className="text-[#0066FF]">Wazungu Kiswahili</span>
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal max-w-2xl mx-auto">
-              {lang === 'sw'
-                ? 'Jukwaa rasmi la Afrika Mashariki linalokuunganisha na watalii, madaktari, na wanafunzi wa vyuo vikuu kutoka nchi za Ulaya na Marekani. Mazungumzo ya dakika 10 tu yanalipa kuanzia TZS 75,000 hadi TZS 95,000 kwenye M-Pesa, Tigo Pesa na Airtel Money.'
-                : 'East Africa’s premier language exchange network connecting native Swahili speakers with international tourists, doctors, and researchers. Earn 75,000 to 95,000 TZS per 10-minute session directly to Mobile Money.'}
+            {/* Plain Info Paragraph (not in badge form) */}
+            <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-semibold max-w-3xl mx-auto px-2">
+              SWAHILI EARN SITE ni fursa ya kipekee kwa vijana kwa sababu inatoa nafasi za kutengeneza kipato cha ziada au hata kujiajiri kupitia simu yako kwa kufundisha wazungu kama watalii au wanachuo lugha ya kiswahili na kulipwa / kutengeneza hadi Tsh 160,000/= kwa siku ,fursa hii ipo Chini ya ONLINEPAY DIGITAL PLATFORM ilioingia ushirika na wazungu wanaotaka kujifunza kiswahili kutoka mataifa mbali mbali
             </p>
 
-            {/* Call To Action Buttons */}
+            {/* Call To Action Button */}
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
               <button
                 onClick={() => onNavigate('learners')}
@@ -99,22 +93,22 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* Trust Highlights Checklist */}
-            <div className="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
+            <div className="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
               <div className="flex items-center gap-2 p-2.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span className="text-xs font-semibold text-slate-800">Malipo ya Moja kwa Moja</span>
               </div>
               <div className="flex items-center gap-2 p-2.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span className="text-xs font-semibold text-slate-800">Hakuna Ada ya Kujiunga</span>
+                <span className="text-xs font-semibold text-slate-800">Dakika 10 kwa Kipindi</span>
               </div>
               <div className="flex items-center gap-2 p-2.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span className="text-xs font-semibold text-slate-800">Dakika 10 kwa Kila Kipindi</span>
+                <span className="text-xs font-semibold text-slate-800">Mataifa ya Afrika Mashariki</span>
               </div>
               <div className="flex items-center gap-2 p-2.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span className="text-xs font-semibold text-slate-800">M-Pesa / Tigo / Airtel</span>
+                <span className="text-xs font-semibold text-slate-800">ONLINEPAY Verified</span>
               </div>
             </div>
 
@@ -122,53 +116,41 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
       </section>
 
-      {/* 2. LIVE METRICS & SPONSOR BAR */}
+      {/* 2. VIRTUAL ACCOUNT OPENING & DASHBOARD SECTION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-slate-900 text-white rounded-3xl p-6 lg:p-8 shadow-xl relative overflow-hidden">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center divide-y lg:divide-y-0 lg:divide-x divide-slate-800">
-            
-            <div className="pt-4 lg:pt-0">
-              <div className="text-2xl sm:text-3xl font-extrabold font-mono text-emerald-400">
-                TZS 95,000
-              </div>
-              <p className="text-xs text-slate-400 mt-1 font-medium">Kiwango cha Juu kwa Dakika 10</p>
-            </div>
+        <VirtualAccountSection
+          user={user}
+          onOpenWithdrawalModal={() => setShowWithdrawalModal(true)}
+          onUserUpdated={onUserUpdated}
+        />
+      </section>
 
-            <div className="pt-4 lg:pt-0">
-              <div className="text-2xl sm:text-3xl font-extrabold font-mono text-blue-400">
-                18,450+
-              </div>
-              <p className="text-xs text-slate-400 mt-1 font-medium">Mazungumzo Yaliyokamilika</p>
-            </div>
-
-            <div className="pt-4 lg:pt-0">
-              <div className="text-2xl sm:text-3xl font-extrabold font-mono text-amber-400">
-                100%
-              </div>
-              <p className="text-xs text-slate-400 mt-1 font-medium">Uhakika wa Malipo ya Simu</p>
-            </div>
-
-            <div className="pt-4 lg:pt-0 flex flex-col items-center justify-center">
-              <span className="text-[10px] tracking-widest uppercase text-slate-400 font-bold">MFADHILI MKUU:</span>
-              <div className="text-sm font-extrabold text-white mt-0.5 tracking-wide">
-                ONLINEPAY PLATFORM
-              </div>
-              <span className="text-[10px] text-emerald-400 font-medium">East Africa Digital Settlement</span>
-            </div>
-
+      {/* 3. ACTIVATION FEE EXPLANATION BOUNCING BADGE */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="animate-bounce">
+          <div className="bg-white border-2 border-amber-400 p-4 sm:p-5 rounded-2xl shadow-xl shadow-amber-500/10 text-center flex items-center justify-center gap-3">
+            <ShieldAlert className="w-6 h-6 text-amber-500 shrink-0" />
+            <p className="font-black text-xs sm:text-sm text-black leading-relaxed">
+              Lipia mtaji wa 16,000/= ili kupata akaunti kamili yenye uwezo kutoa pesa zako , pesa ya mtaji ina wezesha mifumo ya miamala na kibenki ya kampuni kufanya kazi
+            </p>
           </div>
         </div>
       </section>
 
-      {/* 3. HOW IT WORKS (3-STEP FLOW) */}
+      {/* 4. VERIFIED PAYMENTS FROM ACROSS ALL AFRICA (INFINITE VERTICAL SCROLL WINDOW) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-          <span className="text-xs font-bold text-[#0066FF] tracking-wider uppercase">Mfumo Rahisi</span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900">
-            Jinsi ya Kuanza na Kulipwa Leo
+        <VerifiedPayoutsWindow payouts={verifiedPayouts} />
+      </section>
+
+      {/* 5. JINSI YA KUANZA NA KULIPWA (HOW IT WORKS) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <div className="text-center max-w-2xl mx-auto mb-8 space-y-1.5">
+          <span className="text-xs font-bold text-[#0066FF] tracking-wider uppercase">Mwongozo Rahisi</span>
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
+            Jinsi ya Kuanza na Kulipwa
           </h2>
-          <p className="text-sm text-slate-600">
-            Huhitaji ujuzi mgumu wala uzoefu wa ualimu. Fuata hatua hizi 3 rahisi:
+          <p className="text-xs sm:text-sm text-slate-600">
+            Huhitaji ujuzi mgumu. Fuata hatua hizi 3 rahisi:
           </p>
         </div>
 
@@ -207,18 +189,18 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
       </section>
 
-      {/* 4. FEATURED FOREIGN LEARNERS CATALOG */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* 6. FEATURED FOREIGN LEARNERS CATALOG */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 gap-4">
           <div>
             <span className="text-xs font-bold text-[#0066FF] tracking-wider uppercase">Wageni Waliopo Hewani Sasa</span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">
               Wazungu Wanaosubiri Kujifunza Kiswahili
             </h2>
           </div>
           <button
             onClick={() => onNavigate('learners')}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0066FF] hover:text-[#0052CC] transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0066FF] hover:text-[#0052CC] transition-colors cursor-pointer"
           >
             <span>Tazama Orodha Yote ({learners.length})</span>
             <ArrowRight className="w-4 h-4" />
@@ -296,140 +278,15 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
       </section>
 
-      {/* 5. TESTIMONIALS & PROOF */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white rounded-3xl p-8 lg:p-12 shadow-2xl relative">
-          
-          <div className="max-w-2xl mb-8 space-y-2">
-            <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Ushuhuda Halisi</span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold">
-              Watanzania na Wakenya Wanaolipwa Kila Siku
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300">
-              Sikia maoni ya walimu wa kawaida waliolipwa kupitia simu zao za mkononi:
-            </p>
-          </div>
+      {/* 7. HOMEPAGE CUSTOMER CARE BOUNCING POPUP (15s on / 45s off cycle) */}
+      <HomepageCustomerCarePopup whatsappUrl={adminSettings.whatsappSupportUrl} />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <div className="bg-slate-800/80 backdrop-blur-md rounded-2xl p-5 border border-slate-700 space-y-3">
-              <Quote className="w-6 h-6 text-emerald-400 opacity-60" />
-              <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
-                "Nilikuwa na mashaka mwanzoni, lakini nilipoongea na Eliza wa Marekani kwa dakika 10 nikamfundisha salamu za asubuhi, papo hapo TZS 80,000 iliingia mkobani na nikaitoa kwenye M-Pesa."
-              </p>
-              <div className="pt-2 border-t border-slate-700 flex items-center justify-between">
-                <div>
-                  <h4 className="font-bold text-xs text-white">Baraka Mwita</h4>
-                  <p className="text-[11px] text-slate-400">Dar es Salaam, Mwenge</p>
-                </div>
-                <span className="text-emerald-400 font-bold font-mono text-xs">+TZS 80,000</span>
-              </div>
-            </div>
-
-            <div className="bg-slate-800/80 backdrop-blur-md rounded-2xl p-5 border border-slate-700 space-y-3">
-              <Quote className="w-6 h-6 text-emerald-400 opacity-60" />
-              <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
-                "Dk. Mark kutoka London alikuwa mtulivu sana. Nilimfundisha jinsi ya kuuliza maumivu ya mgonjwa kwa Kiswahili. Nilipata TZS 95,000 mara mbili leo kupitia Tigo Pesa!"
-              </p>
-              <div className="pt-2 border-t border-slate-700 flex items-center justify-between">
-                <div>
-                  <h4 className="font-bold text-xs text-white">Halima Athumani</h4>
-                  <p className="text-[11px] text-slate-400">Arusha, Sakina</p>
-                </div>
-                <span className="text-emerald-400 font-bold font-mono text-xs">+TZS 190,000</span>
-              </div>
-            </div>
-
-            <div className="bg-slate-800/80 backdrop-blur-md rounded-2xl p-5 border border-slate-700 space-y-3">
-              <Quote className="w-6 h-6 text-emerald-400 opacity-60" />
-              <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
-                "Nimekuwa nikifanya mazungumzo jioni nikiwa chumbani. Huduma kwa wateja ya WhatsApp inasaidia haraka sana kama ukipata shida ya kutoa fedha. Mfumo huu ni baraka kubwa."
-              </p>
-              <div className="pt-2 border-t border-slate-700 flex items-center justify-between">
-                <div>
-                  <h4 className="font-bold text-xs text-white">Kelvin Otieno</h4>
-                  <p className="text-[11px] text-slate-400">Mwanza, Nyegezi</p>
-                </div>
-                <span className="text-emerald-400 font-bold font-mono text-xs">+TZS 85,000</span>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* 6. SWAHILI FAQ ACCORDION */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8 space-y-2">
-          <span className="text-xs font-bold text-[#0066FF] tracking-wider uppercase">Maswali ya Kawaida</span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-            Maswali Yanayoulizwa Mara kwa Mara (FAQ)
-          </h2>
-        </div>
-
-        <div className="space-y-3">
-          {FREQUENTLY_ASKED_QUESTIONS.map((faq, index) => {
-            const isOpen = activeFaq === index;
-            return (
-              <div
-                key={index}
-                className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs transition-all"
-              >
-                <button
-                  onClick={() => setActiveFaq(isOpen ? null : index)}
-                  className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 font-bold text-slate-900 hover:text-[#0066FF] transition-colors"
-                >
-                  <span className="text-sm sm:text-base">{faq.q}</span>
-                  <ChevronDown
-                    className={`w-5 h-5 text-slate-400 shrink-0 transition-transform duration-200 ${
-                      isOpen ? 'rotate-180 text-[#0066FF]' : ''
-                    }`}
-                  />
-                </button>
-                {isOpen && (
-                  <div className="px-4 pb-5 sm:px-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-                    {faq.a}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* 7. FINAL HIGH-CONVERSION CTA BANNER */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-r from-[#0052CC] to-[#0066FF] rounded-3xl p-8 lg:p-12 text-center text-white space-y-6 shadow-xl relative overflow-hidden">
-          <div className="max-w-2xl mx-auto space-y-3">
-            <h2 className="text-2xl sm:text-4xl font-extrabold">
-              Uko Tayari Kupata Kipato Chako cha Kwanza Leo?
-            </h2>
-            <p className="text-blue-100 text-xs sm:text-sm leading-relaxed">
-              Jiunge na maelfu ya watumiaji wanaozungumza Kiswahili na kupokea pesa zao za M-Pesa kila dakika 10.
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <button
-              onClick={() => onNavigate('learners')}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-[#0052CC] font-extrabold text-sm py-3.5 px-8 rounded-2xl shadow-md transition-all cursor-pointer"
-            >
-              <MessageSquare className="w-4 h-4" />
-              <span>CHAGUA MZUNGU UONGEE NAYE SASA</span>
-            </button>
-            <a
-              href="https://wa.me/message/EP72QM4VJRTIA1"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-sm py-3.5 px-6 rounded-2xl shadow-md transition-all"
-            >
-              <Headphones className="w-4 h-4" />
-              <span>Msaada wa WhatsApp 24/7</span>
-            </a>
-          </div>
-        </div>
-      </section>
+      {/* 8. LIQUID GLASS WITHDRAWAL MODAL */}
+      <WithdrawalModal
+        isOpen={showWithdrawalModal}
+        onClose={() => setShowWithdrawalModal(false)}
+        registrationUrl={adminSettings.registrationExternalUrl}
+      />
 
     </div>
   );
